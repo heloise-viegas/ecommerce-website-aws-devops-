@@ -47,12 +47,12 @@ jobs:
           with:
            go-version: 1.22
         
-        # - name: Run golangci-lint
-        #   uses: golangci/golangci-lint-action@v6
-        #   with:
-        #     version: v1.55.2
-        #     run: golangci-lint run
-        #     working-directory: src/product-catalog
+        - name: Run golangci-lint
+          uses: golangci/golangci-lint-action@v6
+          with:
+            version: v1.55.2
+            run: golangci-lint run
+            working-directory: src/product-catalog
 
     docker:
         runs-on: ubuntu-latest
@@ -85,7 +85,8 @@ jobs:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             IMAGE_TAG: ${{github.run_id}}
           run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ../../src/product-catalog/Dockerfile
+            # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./src/product-catalog/Dockerfile
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./src/product-catalog/Dockerfile ./src/product-catalog
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
