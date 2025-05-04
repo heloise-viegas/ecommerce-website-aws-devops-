@@ -104,6 +104,7 @@ jobs:
 
         - name: Update tag in kubernetes deployment manifest
           run: | 
+               ECR_REGISTRY: "060795923562.dkr.ecr.ap-south-1.amazonaws.com"
                sed -i "s|image: .*|image: $ECR_REGISTRY/$ECR_REPOSITORY:${{github.run_id}}|" kubernetes/productcatalog/deploy.yaml
         
         - name: Commit and push changes
