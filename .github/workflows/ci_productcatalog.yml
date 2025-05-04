@@ -103,9 +103,12 @@ jobs:
             token: ${{ secrets.TOKEN_GITHUB }}
 
         - name: Update tag in kubernetes deployment manifest
+          env:
+            ECR_REGISTRY: "060795923562.dkr.ecr.ap-south-1.amazonaws.com"
+            ECR_REPOSITORY: "otel-product-catalog"
+            IMAGE_TAG: ${{github.run_id}}
           run: | 
-               ECR_REGISTRY: "060795923562.dkr.ecr.ap-south-1.amazonaws.com"
-               sed -i "s|image: .*|image: $ECR_REGISTRY/$ECR_REPOSITORY:${{github.run_id}}|" kubernetes/productcatalog/deploy.yaml
+               sed -i "s|image: .*|image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|" kubernetes/productcatalog/deploy.yaml
         
         - name: Commit and push changes
           run: |
